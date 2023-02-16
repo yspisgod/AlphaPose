@@ -107,7 +107,9 @@ class DataWriter():
             orig_img = np.array(orig_img, dtype=np.uint8)[:, :, ::-1]
             if boxes is None or len(boxes) == 0:
                 if self.opt.save_img or self.save_video or self.opt.vis:
-                    self.write_image(orig_img, im_name, stream=stream if self.save_video else None)
+                    height, width = orig_img.shape[:2] #获取原图像的size
+                    black_img = np.zeros((height, width, 3), dtype=np.uint8) #背景改成黑色画布
+                    self.write_image(black_img, im_name, stream=stream if self.save_video else None)
             else:
                 # location prediction (n, kp, 2) | score prediction (n, kp, 1)
                 assert hm_data.dim() == 4
